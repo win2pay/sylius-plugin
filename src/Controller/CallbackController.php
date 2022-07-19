@@ -52,10 +52,11 @@ class CallbackController extends NotifyController implements ActionInterface, Ap
                 $currency = empty($get_data['currency'])?'':$get_data['currency'];
                 $metadata   = isset($get_data['metadata'])?$get_data['metadata']:'';
                 if($pay_type && $order_id){
+                    $order = $this->orderRepository->find($order_id);
                     if($this->is_https()){
-                        $return_url = 'https://'.$_SERVER['HTTP_HOST'].'/'.$this->localeContext->getLocaleCode().'/order/thank-you';
+                        $return_url = 'https://'.$_SERVER['HTTP_HOST'].'/'.$order->getLocaleCode().'/order/thank-you';
                     }else{
-                        $return_url = 'http://'.$_SERVER['HTTP_HOST'].'/'.$this->localeContext->getLocaleCode().'/order/thank-you';
+                        $return_url = 'http://'.$_SERVER['HTTP_HOST'].'/'.$order->getLocaleCode().'/order/thank-you';
                     }
                     header("Location:".$return_url);
                     exit;
