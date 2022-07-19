@@ -1,0 +1,5 @@
+acme_wintopay_callback_url:
+    path: /wintopay/payment/callback
+    methods: [GET,POST]
+    defaults:
+        _controller:  Acme\SyliusExamplePlugin\Controller\CallbackController::callback
