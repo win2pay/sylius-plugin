@@ -52,7 +52,12 @@ class CallbackController extends NotifyController implements ActionInterface, Ap
                 $currency = empty($get_data['currency'])?'':$get_data['currency'];
                 $metadata   = isset($get_data['metadata'])?$get_data['metadata']:'';
                 if($pay_type && $order_id){
-                    header("Location:https://".$_SERVER['HTTP_HOST'].'/en_US/order/thank-you');
+                    if($this->is_https()){
+                        $return_url = 'https://'.$_SERVER['HTTP_HOST'].'/'.$this->localeContext->getLocaleCode().'/order/thank-you';
+                    }else{
+                        $return_url = 'http://'.$_SERVER['HTTP_HOST'].'/'.$this->localeContext->getLocaleCode().'/order/thank-you';
+                    }
+                    header("Location:".$return_url);
                     exit;
                 }
             }
@@ -122,6 +127,17 @@ class CallbackController extends NotifyController implements ActionInterface, Ap
             throw new UnsupportedApiException('Not supported. Expected an instance of ' . SyliusApi::class);
         }
         $this->api = $api;
+    }
+	function is_https()
+    {
+        if (!empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') {
+            return true;
+        } elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+            return true;
+        } elseif (!empty($_SERVER['HTTP_FRONT_END_HTTPS']) && strtolower($_SERVER['HTTP_FRONT_END_HTTPS']) !== 'off') {
+            return true;
+        }
+        return false;
     }
 }
 
