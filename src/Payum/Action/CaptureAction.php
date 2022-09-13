@@ -120,6 +120,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface
             'success_url'=>$return_url,
             'fail_url'=>$return_url,
             'pending_url'=>$return_url,
+            'pattern'=>'skip',
         ];
         try {
             $response = $this->wccpaycurlPost($this->api->getGatewayUrl(),$data,$website,$this->api->getMerchantId());
